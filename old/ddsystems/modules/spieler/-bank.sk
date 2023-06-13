@@ -1,0 +1,149 @@
+options:
+	p: §7[§fGert§7] §8» §d
+	bp: §7[§eBank§7] §8» §6
+	bank-region: andrada-bank
+
+	item-gui-name: §6Bank §8| §3Itemverwahrung
+	waren-gui-name: §6Bank §8| §2Handelswaren
+
+variables:
+	{bank::konto::geld::%player%} = 0
+	{bank::konto::xp::%player%} = 0
+
+
+command /bank [<string>] [<string>] [<number>] [<offlineplayer>]:
+	usage: /bank <typ> <funktion> <betrag> <spieler> 
+	trigger:
+		if player is in region "{@bank-region}":
+			if arg-1 is "konto":
+				send "§6-------------------- §eBank §6--------------------"
+				send ""
+				send "§6XP-Kontostand: §e%{bank::konto::xp::%player%}% XP"
+				send "§6Geld-Kontostand: §e%{bank::konto::geld::%player%}% Gulden"
+				send ""
+				send formatted "§eGeld <suggest command:/bank geld überweisen>§7[§dÜberweisen§7] <suggest command:/bank geld abheben>§7[§cAbheben§7] <suggest command:/bank geld einzahlen>§7[§aEinzahlen§7]"
+				send formatted "§aXP <suggest command:/bank xp überweisen>§7[§dÜberweisen§7] <suggest command:/bank xp abheben>§7[§cAbheben§7] <suggest command:/bank xp einzahlen>§7[§aEinzahlen§7]"
+				send formatted "§3Items <command:/bank items>§7[§aEin- §8/ §cAuslagern§7]"
+				send formatted "§2Waren <command:/bank waren>§7[§aEin- §8/ §cAuslagern§7]"
+				send ""
+				send "§6-------------------- §eBank §6--------------------"
+			
+			else if arg-1 is "geld":
+				if arg-3 is set:
+					if arg-2 is "überweisen":
+						if arg-4 is set:
+							if {bank::konto::geld::%player%} >= arg-3:
+								remove arg-3 from {bank::konto::geld::%player%}
+								add arg-3 to {bank::konto::geld::%arg-4%}
+								send "{@bp}Du hast §e%arg-3% Gulden §6an §d%arg-4% §6überwiesen."
+								send "{@bp}Dein Geld-Kontostand beträgt nun §e%{bank::konto::geld::%player%}% Gulden§6."
+							else:
+								send "{@bp}Du hast nicht genügend Geld auf der Bank gelagert, um diese Transaktion auszuführen!"
+						else:
+							send "{@bp}Du musst einen Spieler angeben!"
+					
+					else if arg-2 is "abheben":
+						if {bank::konto::geld::%player%} >= arg-3:
+							remove arg-3 from {bank::konto::geld::%player%}
+							add arg-3 to player's balance
+							send "{@bp}Abheben erfolgreich. §7(§c-%arg-3% Gulden§7)"
+							send "{@bp}Dein Geld-Kontostand beträgt nun §e%{bank::konto::geld::%player%}% Gulden§6."
+						else:
+							send "{@bp}Du hast nicht genügend Geld auf der Bank gelagert, um diese Transaktion auszuführen!"
+						
+					else if arg-2 is "einzahlen":
+						if player's balance >= arg-3:
+							remove arg-3 from player's balance
+							add arg-3 to {bank::konto::geld::%player%}
+							send "{@bp}Einzahlen erfolgreich. §7(§a+%arg-3% Gulden§7)"
+							send "{@bp}Dein Geld-Kontostand beträgt nun §e%{bank::konto::geld::%player%}% Gulden§6."
+						else:
+							send "{@bp}Du hast nicht genügend Geld, um diese Transaktion auszuführen!"
+					else:
+						send "{@bp}Diese Funktion ist uns nicht bekannt."
+				else:
+					send "{@bp}Du musst einen Betrag eingeben!"
+			
+			else if arg-1 is "xp":
+				if arg-3 is set:
+					if arg-2 is "überweisen":
+						if {bank::konto::xp::%player%} >= arg-3:
+							remove arg-3 from {bank::konto::xp::%player%}
+							add arg-3 to {bank::konto::xp::%arg-4%}
+							send "{@bp}Du hast §e%arg-3% XP §6an §d%arg-4% §6überwiesen."
+							send "{@bp}Dein XP-Kontostand beträgt nun §e%{bank::konto::xp::%player%}% XP§6."
+						else:
+							send "{@bp}Du hast nicht genügend XP auf der Bank gelagert, um diese Transaktion auszuführen!"
+					
+					else if arg-2 is "abheben":
+						if {bank::konto::xp::%player%} >= arg-3:
+							remove arg-3 from {bank::konto::xp::%player%}
+							add arg-3 to player's level
+							send "{@bp}Abheben erfolgreich. §7(§c-%arg-3% XP§7)"
+							send "{@bp}Dein XP-Kontostand beträgt nun §e%{bank::konto::xp::%player%}% XP§6."
+						else:
+							send "{@bp}Du hast nicht genügend XP auf der Bank gelagert, um diese Transaktion auszuführen!"
+						
+					else if arg-2 is "einzahlen":
+						if player's level >= arg-3:
+							remove arg-3 from player's level
+							add arg-3 to {bank::konto::xp::%player%}
+							send "{@bp}Einzahlen erfolgreich. §7(§a+%arg-3% XP§7)"
+							send "{@bp}Dein XP-Kontostand beträgt nun §e%{bank::konto::xp::%player%}% XP§6."
+						else:
+							send "{@bp}Du hast nicht genügend Level, um diese Transaktion auszuführen!"
+					else:
+						send "{@bp}Diese Funktion ist uns nicht bekannt."
+				else:
+					send "{@bp}Du musst einen Betrag eingeben!"
+			
+			else if arg-1 is "items":
+				set {bank::konto::item::%player%} to a chest inventory with 6 rows named "{@item-gui-name}"
+				set {_s} to 0
+				loop 54 times:
+					set slot {_s} of {bank::konto::item::%player%} to {bank::konto::item::%player%::slot::%{_s}%}
+					add 1 to {_s}
+				open {bank::konto::item::%player%} to player
+			else if arg-1 is "waren":
+				set {bank::konto::waren::%player%} to a chest inventory with 2 rows named "{@waren-gui-name}"
+				set {_s} to 0
+				loop 18 times:
+					set slot {_s} of {bank::konto::waren::%player%} to {bank::konto::waren::%player%::slot::%{_s}%}
+					add 1 to {_s}
+				open {bank::konto::waren::%player%} to player
+			else:
+				send "{@bp}Diese Funktion ist uns nicht bekannt."
+		else:
+			send "{@bp}Du musst dich in der Bank Andradas befinden, um die Funktion zu nutzen!"
+
+			
+#save item storage			
+on inventory close:
+	name of player's inventory is "{@item-gui-name}"
+	set {_s} to 0
+	loop 54 times:
+		set {bank::konto::item::%player%::slot::%{_s}%} to slot {_s} of {bank::konto::item::%player%}
+		add 1 to {_s}
+
+#save handelswaren storage
+on inventory close:
+	name of player's inventory is "{@waren-gui-name}"
+	set {_s} to 0
+	loop 18 times:
+		set {bank::konto::waren::%player%::slot::%{_s}%} to slot {_s} of {bank::konto::waren::%player%}
+		add 1 to {_s}		
+
+
+#open bank menu on region enter			
+on region enter:
+	wait 1 tick
+	player is in region "{@bank-region}"
+	send title "Willkommen in der Stadtbank" with subtitle "Der wohl sicherste Ort Andradas..."
+	send ""
+	make player execute "/bank konto"
+		
+# aktives spielen geld
+every hour:
+	send "{@bp}Allen Spielern wurde für aktives Spielen etwas Geld auf ihr Bankkonto überwiesen." to all players
+	loop all players:
+		add 1200 to {bank::konto::geld::%loop-player%}

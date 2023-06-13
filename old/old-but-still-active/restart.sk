@@ -1,0 +1,33 @@
+options:
+	lacking_perms: §cDu hast nicht die Berechtigung dazu, diesen Befehl zu verwenden.
+	arg_missing: §cArgumentfehler! Argument Fehlt.
+	arg_existing: §cArgumentfehler! Argument existitert nicht.
+	
+	pe: §7[§4§lERROR§7] §8» §c
+	p: §7[§5Avarizia§7] §8» §6
+	pc: §d
+	c: §6
+	c2: §e
+
+command /serverrestart:
+	trigger:
+		if player has permission "avarizia.restart":
+			send "" to all players
+			send "{@p}Achtung: Der Server startet gleich neu!" to all players
+			send "" to all players
+			set {_i} to 60
+			loop 60 times:
+				send title "§c§lServer Restart" with subtitle "§6T-§e%{_i}%" to all players for 5 second with fade in 0 seconds and fade out 0 seconds
+				remove 1 from {_i}
+				wait 0.5 second
+			kick all players due to "§4※※※ §cServer Restart §4※※※%newline%%newline% §6Der Server startet nun neu. %newline% §6Im Normalfall ist unser Server nach etwa §e2-5 Minuten §6wieder erreichbar. Sollte er das nicht sein, melde dich bitte im Discord: §dhttps://discord.gg/EpfHaMYMaJ%newline%%newline%§4※※※ §cServer Restart §4※※※"
+			stop the server
+		else:
+			send "{@pe}Dieder Befehl ist unseren Administratoren vorbehalten."
+			
+on load:
+	wait 20 ticks
+	set {avarizia::modules::restart} to true
+	
+on unload:
+	set {avarizia::modules::restart} to false

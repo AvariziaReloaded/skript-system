@@ -1,0 +1,18 @@
+options:
+	inventory-name: §cInvsee
+
+command /invsee <offlineplayer>:
+	permission: dd.invsee
+	permission message: %{dd::f::permerror}%
+	trigger:
+		if arg-1 is not online:
+			send "%{dd::f::errorprefix}%%arg-1% ist nicht online."
+		else:
+			set {_g} to a chest inventory with 5 rows named "{@inventory-name}"
+			loop arg-1's inventory:
+				set loop-slot of {_g} to loop-value
+			open {_g} to player
+			
+
+on load:
+	loadModule("Mod: Invsee")

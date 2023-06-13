@@ -1,0 +1,11 @@
+on unload:
+	loop {dd::f::*}:
+		clear {dd::f::%loop-index%}
+
+variables:
+	{dd::f::prefix}	= "§7[§9DD§7] §8»§3"				#general prefix
+	{dd::f::errorprefix} = "§7[§4ERROR§7] §8»§c"		#error prefix
+	{dd::f::c1} = "§3"									#main color
+	{dd::f::c2} = "§b"									#second color
+	{dd::f::permerror} = "§7[§4ERROR§7] §8»§c Du hast keine Berechtigung."	#permission error
+	{dd::f::pc} = "§6"

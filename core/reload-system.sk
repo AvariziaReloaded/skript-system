@@ -1,0 +1,7 @@
+command /avarizareload:
+    permission: ava.reload
+    permission message: %{ava::noperm}%
+    trigger:
+        make player execute "/skript reload /core/"
+        wait 5 ticks
+        make player execute "/skript reload /modules/"

@@ -1,0 +1,7 @@
+#Leert den Chat mit mehreren 1000 Zeilen, um Exploits mit anklickbaren Links/Commands zu verhindern
+on join:
+    loop 2000 times:
+        send "" to player
+
+on load:
+    loadModule("Lobby/Messages: AntiChatExploit")

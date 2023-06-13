@@ -1,0 +1,114 @@
+#Avarizia Networks - Roleplay
+#Skript für das Home-System
+
+#Modul im System registrieren
+on load:
+    loadModule("Home-System")
+
+#Home Befehl
+command /newhome [<string>] [<string>] [<string>]:
+    trigger:
+        #Neuen Homepunkt setzen
+        if arg-1 is "neu":
+            if arg-2 is not set:
+                send "%{ava::prefix::home}% §cBitte gib einen Namen für den Homepunkt an!"
+                send "%{ava::prefix::home}% §a/home neu §e<Name>"
+            else:
+                if {ava::rp::playerdata::%player%::home::%arg-2%} is set:
+                    send "%{ava::prefix::home}% §cDu hast bereits einen Homepunkt mit dem Namen §e%arg-2%§c!"
+                    send "%{ava::prefix::home}% Wenn du diesen Namen wiederverwenden möchtest, musst du ihn zuerst löschen!"
+                else:
+                    set {ava::rp::playerdata::%player%::home::%arg-2%::x} to player's x coordinate
+                    set {ava::rp::playerdata::%player%::home::%arg-2%::y} to player's y coordinate
+                    set {ava::rp::playerdata::%player%::home::%arg-2%::z} to player's z coordinate
+                    set {ava::rp::playerdata::%player%::home::%arg-2%::world} to player's world
+                    set {ava::rp::playerdata::%player%::home::%arg-2%} to player's location
+                    set {ava::rp::playerdata::%player%::home::%arg-2%::created} to now
+                    send "%{ava::prefix::home}% Du hast den Homepunkt §e%arg-2% §6gesetzt!"
+                    send "%{ava::prefix::home}% §7(§6X: §e%{ava::rp::playerdata::%player%::home::%arg-2%::x}% §6Y: §e%{ava::rp::playerdata::%player%::home::%arg-2%::y}% §6Z: §e%{ava::rp::playerdata::%player%::home::%arg-2%::z}% §6Welt: §e%{ava::rp::playerdata::%player%::home::%arg-2%::world}%§7)"
+                    send ""
+                    send "%{ava::prefix::home}% Du kannst nun mit §e/home tp §e%arg-2% §6zu deinem Homepunkt teleportieren!"
+        
+        #Homepunkt löschen
+        else if arg-1 is "löschen":
+            if arg-2 is not set:
+                send "%{ava::prefix::home}% §cBitte gibt den Namen des Homepunktes an, den du löschen möchtest!"
+                send "%{ava::prefix::home}% §a/home löschen §e<Name>"
+            else:
+                if {ava::rp::playerdata::%player%::home::%arg-2%} is set:
+                    clear {ava::rp::playerdata::%player%::home::%arg-2%::x}
+                    clear {ava::rp::playerdata::%player%::home::%arg-2%::y}
+                    clear {ava::rp::playerdata::%player%::home::%arg-2%::z}
+                    clear {ava::rp::playerdata::%player%::home::%arg-2%::world}
+                    clear {ava::rp::playerdata::%player%::home::%arg-2%}
+                    send "%{ava::prefix::home}% §aDu hast den Homepunkt §e%arg-2% §agelöscht!"
+                else:
+                    send "%{ava::prefix::home}% §cDer Homepunkt §e%arg-2% §cexistiert nicht!"
+        
+        #Homepunkte auflisten
+        else if arg-1 is "list":
+            send "%{ava::prefix::home}% §aDeine Homepunkte:"
+            loop {ava::rp::playerdata::%player%::home::*}:
+                send "%{ava::prefix::home}% §7- §e%loop-index%"
+
+        #Details zum Homepunkt abrufen
+        else if arg-1 is "details":
+            if arg-2 is not set:
+                send "%{ava::prefix::home}% §cBitte gib den Namen des Homepunktes an, zu dem du Details abrufen möchtest!"
+                send "%{ava::prefix::home}% §a/home details §e<Name>"
+            else:
+                if {ava::rp::playerdata::%player%::home::%arg-2%::x} is not set:
+                    send "%{ava::prefix::home}% §cDer Homepunkt §e%arg-2% §cexistiert nicht!"
+                else:
+                    send "%{ava::prefix::home}% Details zum Homepunkt §e%arg-2%§6:"
+                    send "%{ava::prefix::home}% X: §e%{ava::rp::playerdata::%player%::home::%arg-2%::x}%"
+                    send "%{ava::prefix::home}% Y: §e%{ava::rp::playerdata::%player%::home::%arg-2%::y}%"
+                    send "%{ava::prefix::home}% Z: §e%{ava::rp::playerdata::%player%::home::%arg-2%::z}%"
+                    send "%{ava::prefix::home}% Welt: §e%{ava::rp::playerdata::%player%::home::%arg-2%::world}%"
+                    send "%{ava::prefix::home}% §6Erstellt am: §e%{ava::rp::playerdata::%player%::home::%arg-2%::created}%"
+        
+        #Homepunkt teilen
+        else if arg-1 is "teilen":
+            if arg-2 is not set:
+                send "%{ava::prefix::home}% Bitte gib den Namen des Homepunktes an, den du teilen möchtest!"
+                send "%{ava::prefix::home}% §a/home teilen §e<Name>"
+            else:
+                if arg-3 is not set:
+                    send "%{ava::prefix::home}% Bitte gib den Namen des Spielers an, mit dem du den Homepunkt teilen möchtest!"
+                    send "%{ava::prefix::home}% §a/home teilen §e<Name> <Spieler>"
+                    send "%{ava::prefix::home}% §7(§6Du kannst auch §eserverweit §6eingeben, um den Homepunkt mit allen Spielern zu teilen§7)"
+                else:
+                    if arg-3 is "serverweit":
+                        broadcast "%{ava::prefix::home}% §e%player% §6teilt einen Homepunkt mit allen Spielern:"
+                        broadcast "%{ava::prefix::home}% Name: §e%arg-2%"
+                        broadcast "%{ava::prefix::home}% X: §e%{ava::rp::playerdata::%player%::home::%arg-2%::x}%"
+                        broadcast "%{ava::prefix::home}% Y: §e%{ava::rp::playerdata::%player%::home::%arg-2%::y}%"
+                        broadcast "%{ava::prefix::home}% Z: §e%{ava::rp::playerdata::%player%::home::%arg-2%::z}%"
+                        broadcast "%{ava::prefix::home}% Welt: §e%{ava::rp::playerdata::%player%::home::%arg-2%::world}%"
+                    else:
+                        set {_player} to arg-3 parsed as a player
+                        if {_player} is not online:
+                            send "%{ava::prefix::home}% §cDer Spieler §e%arg-3% §cist nicht online!"
+                        else:
+                            send "%{ava::prefix::home}% §e%player% §6teilt dir einen Homepunkt:" to {_player}
+                            send "%{ava::prefix::home}% Name: §e%arg-2%" to {_player}
+                            send "%{ava::prefix::home}% X: §e%{ava::rp::playerdata::%player%::home::%arg-2%::x}%" to {_player} 
+                            send "%{ava::prefix::home}% Y: §e%{ava::rp::playerdata::%player%::home::%arg-2%::y}%" to {_player}
+                            send "%{ava::prefix::home}% Z: §e%{ava::rp::playerdata::%player%::home::%arg-2%::z}%" to {_player}
+                            send "%{ava::prefix::home}% Welt: §e%{ava::rp::playerdata::%player%::home::%arg-2%::world}%" to {_player}
+                            send "" to {_player}
+                            send "%{ava::prefix::home}% §aDu hast den Homepunkt §e%arg-2% §amit dem Spieler §e%arg-3% §ageteilt!"
+        
+        #Zu einem Homepunkt teleportieren
+        else if arg-1 is "tp":
+            i
+
+on tab complete of "/home":
+    set tab completions of position 1 to "list", "neu", "löschen", "tp", "details" and "teilen"
+    if tab arg-1 is "details" or "teilen" or "löschen" or "tp":
+        loop {ava::rp::playerdata::%player%::home::*}:
+            add "%loop-index%" to tab completions of position 2
+    if tab arg-1 is "teilen":
+        loop {ava::rp::playerdata::%player%::home::*}:
+            add "%loop-index%" to tab completions of position 3
+        add "serverweit" to tab completions of position 3

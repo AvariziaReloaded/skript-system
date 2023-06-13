@@ -1,0 +1,7 @@
+#Item im System registrieren
+on load:
+    set {ava::crafting::items::invisible_frame} to a item frame named "§bUnsichtbarer Rahmen" with lore "§ePlatziert einen unsichtbaren Item Frame," and "§eder sonst nur über Commands platziert werden kann."
+
+#Neues Rezept registrieren
+on load:
+    register new shaped recipe for {ava::crafting::items::invisible_frame} using "item frame", "item frame", "item frame", "item frame", "potion of invisibility", "item frame", "item frame", "item frame", "item frame" with id "invisible_frame"

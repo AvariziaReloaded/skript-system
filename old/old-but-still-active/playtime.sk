@@ -1,0 +1,36 @@
+on join:
+	if {pt::%player%::f} is not set:
+		set {pt::%player%::f} to ""
+	
+	if {pt::%player%::d} is not set:
+		set {pt::%player%::d} to 0
+	
+	if {pt::%player%::h} is not set:
+		set {pt::%player%::h} to 0
+	
+	if {pt::%player%::m} is not set:
+		set {pt::%player%::m} to 0
+	
+	if {pt::%player%::s} is not set:
+		set {pt::%player%::s} to 0
+
+every second:
+	loop all players:
+		add 1 to {pt::%loop-player%::s}
+		if {pt::%loop-player%::s} >= 60:
+			add 1 to {pt::%loop-player%::m}
+			set {pt::%loop-player%::s} to 0
+		if {pt::%loop-player%::m} >= 60:
+			add 1 to {pt::%loop-player%::h}
+			set {pt::%loop-player%::m} to 0
+		if {pt::%loop-player%::h} >= 24:
+			add 1 to {pt::%loop-player%::d}
+			set {pt::%loop-player%::h} to 0
+		set {pt::%loop-player%::f} to "§e%{pt::%loop-player%::d}% §6Tage §e%{pt::%loop-player%::h}% §6Stunden"
+		
+on load:
+	wait 20 ticks
+	set {avarizia::modules::playtime} to true
+	
+on unload:
+	set {avarizia::modules::playtime} to false

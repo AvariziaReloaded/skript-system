@@ -1,0 +1,10 @@
+command /menü [<string>]:
+    trigger:
+        open buildMenuGui(player) to player
+
+function buildMenuGui(p: player) :: inventory:
+    set {_g} to a chest inventory with 3 rows named "Menü • %{_p}%"
+    return {_g}        
+
+on load:
+    loadModule("Roleplay: Menü")

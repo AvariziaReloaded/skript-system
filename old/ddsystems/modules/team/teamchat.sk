@@ -1,0 +1,14 @@
+command /teamchat [<string>]:
+	permission: dd.teamchat
+	permission message: %{dd::f::permerror}%
+	aliases: /tc
+	trigger:
+		if arg-1 is not set:
+			send "%{dd::f::prefix}% %{dd::f::c2}%/teamchat <Nachricht>"
+		else:
+			loop all players:
+				loop-player has permission "dd.teamchat"
+				send "§7[§cTeamchat §8| §6%player%§7] §8» §a%arg-1%" to loop-player
+				
+on load:
+	loadModule("Team: Teamchat")

@@ -1,0 +1,8 @@
+#Nachrichten beim Betreten und Verlassen des Servers anpassen
+on join:
+    set join message to "§7[§a§l+§7] %{ava::c1}%Der Spieler %{ava::pc}%%player% %{ava::c1}%hat die Lobby betreten."
+on leave:
+    set leave message to "§7[§c§l-§7] %{ava::c1}%Der Spieler %{ava::pc}%%player% %{ava::c1}%hat die Lobby verlassen."
+
+on load:
+    loadModule("Lobby/Messages: Join/Leave")

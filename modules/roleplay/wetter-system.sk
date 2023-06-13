@@ -1,0 +1,43 @@
+on load:
+    clear {avarizia::wetter::possible::*}
+    add "sonnig" to {avarizia::wetter::possible::sonnig}
+    add "regnerisch" to {avarizia::wetter::possible::regnerisch}
+    #add "schneeregen" to {avarizia::wetter::possible::schneeregen} #welcher effekt?
+    add "schnee" to {avarizia::wetter::possible::schnee}
+    add "gewitter" to {avarizia::wetter::possible::gewitter}
+    add "nebel" to {avarizia::wetter::possible::nebel}
+    add "windig" to {avarizia::wetter::possible::windig}
+    add "stürmisch" to {avarizia::wetter::possible::stürmisch}
+    add "hagel" to {avarizia::wetter::possible::hagel}
+
+
+#Trigger für die Nacht
+#TODO: Nachttrigger
+
+#Trigger für den Tag
+#TODO: Tagtrigger
+
+#Setzen der Effekte für die Nacht
+
+function announceNight():
+    broadcast "Die Nacht bricht herein, das Wetter kommt zur Ruhe."
+    broadcast 
+
+
+
+#Wetter im Chat ankündigen
+function weatherReport():
+    broadcast "%{ava::prefix::wetter}% Es gibt einen neuen Wetterbericht!"
+    broadcast "%{ava::preifx::wetter}% Heute ist das Wetter %{avarizia::wetter::current}%."
+
+
+
+function setWeatherEffects(p: player):
+    if {avarizia::wetter::current} is "sonnig":
+
+
+
+
+
+
+#TODO: Spieler beim Joinen Effekte geben/nehmen

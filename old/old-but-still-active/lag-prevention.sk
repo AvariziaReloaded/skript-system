@@ -1,0 +1,10 @@
+on spawn of bat:
+	cancel event
+	kill the event-mob
+	
+on load:
+	wait 20 ticks
+	set {avarizia::modules::lagprevention} to true
+	
+on unload:
+	set {avarizia::modules::lagprevention} to false

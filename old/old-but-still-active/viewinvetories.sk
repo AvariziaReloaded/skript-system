@@ -1,0 +1,29 @@
+command /viewbackpack <offlineplayer>:
+	permission: avarizia.viewbackpack
+	trigger:
+		set {_backpack} to a chest inventory with 6 rows named "§cADMINVIEW Backpack %arg-1%"
+		set {_s} to 0
+		loop 54 times:
+			set slot {_s} of {_backpack} to {data::%arg-1%::backpack.slot::%{_s}%}
+			add 1 to {_s}
+		open {_backpack} to player
+		play sound "block.chest.open" to player
+
+command /viewenderchest <offlineplayer>:
+	permission: avarizia.viewenderchest
+	trigger:
+		set {_enderchest} to enderchest of arg-1
+		open {_enderchest} to player
+		
+command /viewinventory <offlineplayer>:
+	permission: avarizia.viewinventory
+	trigger:
+		set {_inventory} to inventory of arg-1
+		open {_inventory} to player
+		
+on load:
+	wait 20 ticks
+	set {avarizia::modules::viewinv} to true
+	
+on unload:
+	set {avarizia::modules::viewinv} to false

@@ -1,0 +1,48 @@
+#Donnjer Development Maintance Script
+
+options:
+	discord-link: https://discord.gg/EpfHaMYMaJ
+
+command /wartung [<string>]:
+	permission: dd.wartung
+	permission message: %{dd::f::permerror}%
+	trigger:
+		if arg-1 is not set:
+			send ""
+			send "§a/wartung §7<§eArgument§7>"
+			send ""
+			send "§b➥ §eenable §9- §3Aktiviert den Wartungsmodus"
+			send "§b➥ §edisable §9- §3Deaktiviert den Wartungsmodus"
+			send ""
+
+		else if arg-1 is "enable":
+			broadcast "%{dd::f::prefix}%Der Server begibt sich nun in den Wartungsmodus."
+			broadcast "%{dd::f::prefix}%Wir bitten um euer Verständnis."
+			broadcast "%{dd::f::prefix}%Weitere Infos auf unserem Discord unter %{dd::f::c2}%/discord%{dd::f::c1}%."
+			set {_c} to 60
+			
+			loop 60 times:
+				send title "§4--- §cWartungsmodus §4---" with subtitle "§7T-§e%{_c}% §7Sekunden" to all players for 5 second with fade in 0 seconds and fade out 1 seconds
+				remove 1 from {_c}
+				wait 1 second
+			
+			loop all players: #kick all players who are not in dev team
+				loop-player do not have permission "dd.wartung"
+				kick loop-player
+			
+			set {dd.wartung::active} to true
+				
+		else if arg-1 is "disable":
+			broadcast "Der Wartungsmodus wurde deaktiviert."
+			clear {dd.wartung::active}
+		
+		else:
+			errorSubCmd("/wartung", player)
+			
+on connect:
+	if {dd.wartung::active} is set:
+		if player do not have permission "dd.wartung":
+			kick the player due to "§c✖✖✖ §eWARTUNGSARBEITEN §c✖✖✖ %newline%%newline% §3Unser Server befindet sich derzeit im Wartungsmodus. %newline%Schaue später nochmal vorbei. %newline%%newline% §3Mehr Infos bekommst du auf unserem Discord: §b{@discord-link} %newline%%newline%§c✖✖✖ §eWARTUNGSARBEITEN §c✖✖✖"
+		
+on load:
+	loadModule("Dev: Wartung")

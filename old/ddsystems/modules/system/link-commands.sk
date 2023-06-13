@@ -1,0 +1,16 @@
+command /karte [<string>]:
+	aliases: map
+	trigger:
+		send formatted "%{dd::f::prefix}%Unsere %{dd::f::c2}%Online-Karte %{dd::f::c1}%findest du §7[<ttp:§dKlicke hier, um unsere Online-Karte in deinem Browser zu öffnen.><link:http://avarizia.eu:9001/rpg/>%{dd::f::c2}%Hier§7]"
+
+command /website [<string>]:
+	aliases: web
+	trigger:
+		send formatted "%{dd::f::prefix}%Unsere %{dd::f::c2}%Website %{dd::f::c1}%findest du §7[<ttp:§dKlicke hier, um unsere Website in deinem Browser zu öffnen.><link:https://avarizia.eu>%{dd::f::c2}%Hier§7]"
+		
+command /regeln [<string>]:		
+	trigger:
+		send formatted "%{dd::f::prefix}%Unser %{dd::f::c2}%Regelwerk %{dd::f::c1}%findest du §7[<ttp:§dKlicke hier, um unser Regelwerk in deinem Browser zu öffnen.><link:https://avarizia.eu/index.php/regeln>%{dd::f::c2}%Hier§7]" 
+
+on load:
+	loadModule("System: Link-Commands")

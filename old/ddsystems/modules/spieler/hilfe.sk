@@ -1,0 +1,26 @@
+command /neuhilfe [<string>]:
+	trigger:
+		if arg-1 is not set:
+			send "Willkommen im Hilfe-Menü."
+			send "Bitte gib die Kategorie an, zu der du Hilfe benötigst. Du kannst auch einfach mit der Maus drauf klicken."
+			send "§a/hilfe §e<Kategorie>"
+			send "Mögliche Kategorien:"
+			send "befehle"
+			send "discord"
+			send "support"
+			
+		else if arg-1 is "befehle":
+			send "Eine Auflistung aller unserer Commands, findest du [Hier] auf unserer Webseite."
+		
+		else if arg-1 is "discord":
+			send "Unseren Discord Server findest du [Hier]."
+		
+		else if arg-1 is "support":
+			send "Support erhälst du entweder im Spiel (/support) oder im auf unserem Discord Server (/discord)"
+		
+		else if arg-1 is "bewerbung":
+			send "Wir suchen momentan verstärkt nach Teammitgliedern. Falls du Interesse haben solltest, bei uns im Team mitzuwirken, fülle einfach unser Bewerbungsformular aus. Dieses kannst du im Discord finden. (/discord)"
+		
+		else:
+			send "§cDiesen Unterbefehl gibt es nicht."
+			send "§a/hilfe §c%arg-1%"

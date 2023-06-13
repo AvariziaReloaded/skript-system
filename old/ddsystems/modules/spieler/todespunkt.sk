@@ -1,0 +1,30 @@
+options:
+	enable-tp: false
+
+on death:
+	victim is a player #only create variable if entity is a player; do not, under any circumstances, delete this line!
+	
+	set {deathpoint::%victim%::cords} to victim's location
+	set {deathpoint::%victim%::cords::x} to victim's x coordinate
+	set {deathpoint::%victim%::cords::y} to victim's y coordinate
+	set {deathpoint::%victim%::cords::z} to victim's z coordinate
+	
+	force victim to respawn
+	
+	send "%{dd::f::prefix}% Dein Todespunkt befindet sich bei:" to victim
+	send "%{dd::f::prefix}% %{dd::f::c1}%X: %{dd::f::c2}%%{deathpoint::%victim%::cords::x}% %{dd::f::c1}%Y: %{dd::f::c2}%%{deathpoint::%victim%::cords::y}% %{dd::f::c1}%Z: %{dd::f::c2}%%{deathpoint::%victim%::cords::z}%" to victim
+	
+	if {@enable-tp} is true:
+		send formatted "%{dd::f::prefix}%<command:/deathpoint>§7[%{dd::f::c2}%Teleport§7]" to victim
+	
+command /deathpoint [<string>]:
+	trigger:
+		if {@enable-tp} is true:
+			if {deathpoint::%player%::cords} is set:
+				teleport player to {deathpoint::%player%::cords}
+				clear {deathpoint::%player%::cords}
+		else:
+			send "%{dd::f::errorprefix}% Das Teleport-Modul ist deaktiviert."
+	
+on load:
+	loadModule("Spieler: Todespunkt")

@@ -1,0 +1,10 @@
+command /chatclear:
+	permission: dd.chatclear
+	permission message: %{dd::f::permerror}%
+	trigger:
+		loop 1500 times:
+			send "" to all players
+		send "%{dd::f::prefix}% Der Chat wurde von %{dd::f::pc}%%player% %{dd::f::c1}%geleert." to all players
+		
+on load:
+	loadModule("Mod: Chatclear")

@@ -1,0 +1,15 @@
+function setTab(p: player):
+	set {_pref} to prefix of {_p}
+	set {_p}'s displayname to "§7[%{_pref}%§7] §6%{_p}%"
+	
+on join:
+	setTab(player)
+	
+command /refreshtab:
+	trigger:
+		loop all players:
+			setTab(loop-player)
+		send "%{dd::f::prefix}%Tabliste neu geladen."
+			
+on load:
+	loadModule("System: Tablist")

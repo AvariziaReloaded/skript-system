@@ -1,0 +1,154 @@
+options:
+	pe: §7[§4§lERROR§7] §8» §c
+	p: §7[§5Avarizia§7] §8» §6
+	pc: §d
+	c1: §6
+	c2: §e
+	lore: §6Dieses Item ist eine Handelsware. %newline%§6Du kannst sie beim §eSpeicherhaus im Hafen §6erwerben %newline%§6und mit den §eHändlern in Andrada §6handeln.
+	
+	region: speicherhaus
+	
+	br: §6§lForstprodukte
+	li: §a§lAgrarprodukte
+	lg: §7§lMetalle
+	gr: §8§lMineralien
+	bl: §b§lEdelsteine
+	re: §c§lFleischereiprodukte
+	cy: §3§lFischereiprodukte
+	ye: §e§lFloristikprodukte
+	ma: §5§lLuxusgüter
+	
+	br-cost: 50
+	li-cost: 80
+	lg-cost: 200
+	gr-cost: 100
+	bl-cost: 500
+	re-cost: 30
+	cy-cost: 30
+	ye-cost: 100
+	ma-cost: 1000
+	
+command /givehandelswaren <player> <string>:
+	permission: avarizia.handel.givehandelswaren
+	permission message: {@pe}Dieser Befehl ist unseren Administratoren vorbehalten.
+	trigger:
+		if arg-2 is "br":
+			give arg-1 1 brown dye named "{@br}" with lore "{@lore}"
+		if arg-2 is "li":
+			give arg-1 1 lime dye named "{@li}" with lore "{@lore}"
+		if arg-2 is "lg":
+			give arg-1 1 light gray dye named "{@lg}" with lore "{@lore}"
+		if arg-2 is "gr":
+			give arg-1 1 gray dye named "{@gr}" with lore "{@lore}"
+		if arg-2 is "bl":
+			give arg-1 1 light blue dye named "{@bl}" with lore "{@lore}"
+		if arg-2 is "re":
+			give arg-1 1 red dye named "{@re}" with lore "{@lore}"
+		if arg-2 is "cy":
+			give arg-1 1 cyan dye named "{@cy}" with lore "{@lore}"
+		if arg-2 is "ye":
+			give arg-1 1 yellow dye named "{@ye}" with lore "{@lore}"
+		if arg-2 is "ma":
+			give arg-1 1 magenta dye named "{@ma}" with lore "{@lore}"
+		
+	
+on drop of dye:
+	event-item's name is "{@br}" or "{@li}" or "{@lg}" or "{@gr}" or "{@bl}" or "{@re}" or "{@cy}" or "{@ye}" or "{@ma}"
+	cancel event
+	send "{@p}Du kannst Handelswaren nicht fallenlassen! Bringe sie zur Bank in Andrada oder handle sie mit den Händlern dort."
+
+on inventory click:
+	event-item's name is "{@br}" or "{@li}" or "{@lg}" or "{@gr}" or "{@bl}" or "{@re}" or "{@cy}" or "{@ye}" or "{@ma}"
+	name of player's inventory is not "Crafting" or "§6Bank §8| §2Handelswaren" or "§3§lHandelswaren importieren"
+	send "{@p}Du kannst Handelswaren nicht in andere Inventare verschieben! Bringe sie zur Bank in Andrada oder handle sie mit den Händlern dort."
+	cancel event
+	
+on inventory click:
+	name of player's inventory is "§6Bank §8| §2Handelswaren"
+	event-item's name is not "{@br}" or "{@li}" or "{@lg}" or "{@gr}" or "{@bl}" or "{@re}" or "{@cy}" or "{@ye}" or "{@ma}"
+	cancel event
+	
+
+on region enter:
+	wait 1 tick
+	player is in region "{@region}"
+	set {_g} to a chest inventory with 5 rows named "§3§lHandelswaren importieren"
+	loop 45 times:
+		set slot loop-value - 1 of {_g} to a gray stained glass pane named "§7"
+	set slot 12 of {_g} to brown dye named "{@br}" with lore "§6KpP: §e{@br-cost} Gulden"
+	set slot 13 of {_g} to yellow dye named "{@ye}" with lore "§6KpP: §e{@ye-cost} Gulden"
+	set slot 14 of {_g} to lime dye named "{@li}" with lore "§6KpP: §e{@li-cost} Gulden"
+	
+	set slot 20 of {_g} to cyan dye named "{@cy}" with lore "§6KpP: §e{@cy-cost} Gulden"
+	set slot 22 of {_g} to magenta dye named "{@ma}" with lore "§6KpP: §e{@ma-cost} Gulden"
+	set slot 24 of {_g} to red dye named "{@re}" with lore "§6KpP: §e{@re-cost} Gulden"
+	
+	set slot 30 of {_g} to light gray dye named "{@lg}" with lore "§6KpP: §e{@lg-cost} Gulden"
+	set slot 31 of {_g} to light blue dye named "{@bl}" with lore "§6KpP: §e{@bl-cost} Gulden"
+	set slot 32 of {_g} to gray dye named "{@gr}" with lore "§6KpP: §e{@gr-cost} Gulden"
+	
+	set slot 44 of {_g} to a paper named "§7Informartionen" with lore "§6KpP: Kosten pro Produkt"
+	
+	open {_g} to player
+	
+	play sound "block.chest.open" to player
+	
+	
+on inventory click:
+	name of player's inventory is "§3§lHandelswaren importieren"
+	cancel event
+	if clicked slot is 12:
+		if player's money >= {@br-cost}:
+			remove {@br-cost} from player's money
+			make console execute "/givehandelswaren %player% br"
+			play sound "block.note_block.bell" to player
+	if clicked slot is 13:	
+		if player's money >= {@ye-cost}:
+			remove {@ye-cost} from player's money
+			make console execute "/givehandelswaren %player% ye"
+			play sound "block.note_block.bell" to player
+	if clicked slot is 14:
+		if player's money >= {@li-cost}:
+			remove {@li-cost} from player's money
+			make console execute "/givehandelswaren %player% li"
+			play sound "block.note_block.bell" to player
+	
+	if clicked slot is 20:	
+		if player's money >= {@cy-cost}:
+			remove {@cy-cost} from player's money
+			make console execute "/givehandelswaren %player% cy"
+			play sound "block.note_block.bell" to player
+	if clicked slot is 22:	
+		if player's money >= {@ma-cost}:
+			remove {@ma-cost} from player's money
+			make console execute "/givehandelswaren %player% ma"
+			play sound "block.note_block.bell" to player
+	if clicked slot is 24:
+		if player's money >= {@re-cost}:
+			remove {@re-cost} from player's money
+			make console execute "/givehandelswaren %player% re"
+			play sound "block.note_block.bell" to player
+	
+	if clicked slot is 30:	
+		if player's money >= {@lg-cost}:
+			remove {@lg-cost} from player's money
+			make console execute "/givehandelswaren %player% lg"
+			play sound "block.note_block.bell" to player
+	if clicked slot is 31:	
+		if player's money >= {@bl-cost}:
+			remove {@bl-cost} from player's money
+			make console execute "/givehandelswaren %player% bl"
+			play sound "block.note_block.bell" to player
+	if clicked slot is 32:
+		if player's money >= {@gr-cost}:
+			remove {@gr-cost} from player's money
+			make console execute "/givehandelswaren %player% gr"
+			play sound "block.note_block.bell" to player
+		
+
+on load:
+	wait 20 ticks
+	set {avarizia::modules::handelswaren} to true
+	
+on unload:
+	set {avarizia::modules::handelswaren} to false

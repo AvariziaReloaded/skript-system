@@ -1,0 +1,41 @@
+#Donnjer Development Bug-Report Skript 10.03.23
+
+command /bugreport [<string>]:
+	trigger:
+		if arg-1 is not set:
+		else if arg-1 is "generate":
+			if {dd.bug::id} is not set:
+				set {dd.bug::id} to 1
+			else: 
+				add random integer between 3 and 17 to {dd.bug::id}
+			
+			set {_c} to {dd.bug::id} #prevents from overwriting if command is executed at the same time from two different persons
+			
+			set {dd.bug::report::%{_c}%::health} to player's health
+			set {dd.bug::report::%{_c}%::location} to player's location
+			set {dd.bug::report::%{_c}%::name} to player's name
+			set {dd.bug::report::%{_c}%::food} to player's food level
+			set {dd.bug::report::%{_c}%::ip} to player's ip
+			set {dd.bug::report::%{_c}%::attacker} to player's last attacker
+			#set {dd.bug::report::%{_c}%::health} to player's health
+			#set {dd.bug::report::%{_c}%::health} to player's health
+			#set {dd.bug::report::%{_c}%::health} to player's health
+			#set {dd.bug::report::%{_c}%::health} to player's health
+			#set {dd.bug::report::%{_c}%::health} to player's health
+			#set {dd.bug::report::%{_c}%::health} to player's health
+			#set {dd.bug::report::%{_c}%::health} to player's health
+			#set {dd.bug::report::%{_c}%::health} to player's health
+			
+			send "Daten wurden gesammelt."
+			send "BugID: %{_c}%"
+			send "Bitte gib diese ID unbedingt bei deinem Bug-Report an!"
+		else:
+			errorSubCmd("/bugreport", player)
+			
+command /viewreport <int>:
+	permission: dd.viewreport
+	trigger:
+		loop {dd.bug::report::%arg-1%::*}:
+			send "%{dd::f::c1}%%loop-index% §9- %{dd::f::c2}%%loop-value%"
+on load:
+	loadModule("Dev: Bug-Report")

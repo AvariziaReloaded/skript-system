@@ -1,0 +1,48 @@
+#Donnjer Development LogOn Command
+#Written on 25.12.2021
+#Remastered for Avarizia on 23.06.2022
+
+command /logon [<string>] [<string>]:
+	permission: dd.logon
+	permission message: %{dd::f::errorprefix}%
+	trigger:
+		if arg-1 is not set:
+			send ""
+			send "§a/logon §7<§eArgument§7>"
+			send ""
+			send "§b➥ §eadd §9- §3Befehl Hinzufügen"
+			send "§b➥ §elist §9- §3Befehle auflisten"
+			send ""
+		
+		else if arg-1 is "add":
+			if arg-2 is set:
+				add arg-2 to {dd.logon::%player%::*}
+				send "%{dd::f::prefix}%Der Befehl §b%arg-2% §3wurde zu deiner LogOn-Liste hinzugefügt."
+			else:
+				send "%{dd::f::prefix}%Gib einen Befehl an!"
+		
+		else if arg-1 is "remove":
+			if arg-2 is set:
+				loop {dd.logon::%player%::*}:
+					arg-2 is loop-index
+					remove loop-value from {dd.logon::%player%::*}
+					send "%{dd::f::prefix}%Der Befehl §b%loop-value% §3wurde von deiner LogOn-Liste entfernt."
+
+		
+		else if arg-1 is "list":
+			send "%{dd::f::prefix}%Folgende Commands hast du abgespeichert:"
+			loop {dd.logon::%player%::*}:
+				send formatted "§b%loop-index% §9» §e%loop-value% <command:/logon remove %loop-index%>§7[§cEntfernen§7]"
+		
+		else:
+			errorSubCmd("/logon", player)
+
+on join:
+	player has permission "avarizia.team.logon"
+	wait 5 ticks
+	loop {dd.logon::%player%::*}:
+		make player execute loop-value
+		wait 1 tick
+		
+on load:
+	loadModule("Team: LogOn")

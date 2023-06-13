@@ -1,0 +1,17 @@
+on load:
+    set {ava::prefix} to "§7[§6Avarizia§7] §8»§6"
+    set {ava::prefix::system} to "§7[§6Ava§5Sys§7] §8»§6"
+    set {ava::prefix::zeit} to "§7[§6Ava§5Zeit§7] §8»§6"
+    set {ava::prefix::home} to "§7[§6Ava§5Home§7] §8»§6"
+    set {ava::prefix::network} to "§7[§6Ava§5Net§7] §8»§6"
+    set {ava::prefix::navigator} to "§7[§6Ava§5Nav§7] §8»§6"
+    set {ava::prefix::module} to "§7[§6Ava§5Mod§7] §8»§6"
+    set {ava::prefix::rucksack} to "§7[§6Ava§5BP§7] §8»§6"
+
+    set {ava::noperm} to "%{ava::rp::prefix}% §cDieser Befehl ist unserem Team vorbehalten."
+    
+    set {ava::c1} to "§6"
+    set {ava::c2} to "§e"
+    set {ava::pc} to "§d"
+    set {ava::ec} to "§c"
+    set {ava::rc} to "§a"

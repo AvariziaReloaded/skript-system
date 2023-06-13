@@ -1,0 +1,98 @@
+#Einstellungen
+options:
+	filler: a gray stained glass pane named "§7"
+	arena-item: netherite sword named "§cArena"
+	event-item: enchanted golden apple named "§6Event"
+	bedwars-item: purple bed named "§eBedwars"
+	zombie-item: zombie head named "§2Zombie Survival"
+	roleplay-item: spyglass named "§9Roleplay"
+	creative-item: bricks named "§bCreative"
+	modpack-item: redstone dust named "§5Modpack"
+	knockit-item: stick named "§4KnockIT"
+	smp-item: grass block named "§aSMP"
+
+	switcher-name: &5§lNavigator §8(§7Rechtsklick§8)
+	switcher-item: emerald
+
+
+#Inventar bereinigen, Spieler teleportieren, Kompass geben
+on join:
+	if {ava::lobby::active} is set:
+		clear player's inventory
+		teleport player to {ava::lobby::spawn}
+		set slot 4 of player's inventory to a {@switcher-item} named "{@switcher-name}" with lore "§dWähle einen Server zum Spielen aus!"
+		set player's selected hotbar slot to slot 4 of player
+
+#Layout der Kiste:
+# X A X X X X X E X
+# B X Z X R X C X M
+# X K X X X X X S X
+
+# Z: Zombie Survival
+# K: KnockIT
+# B: Bedwars
+# A: Arena
+# R: Roleplay
+# C: Creative
+# S: SMP
+# M: Modpack
+# E: Event
+
+
+#Menü, um auf andere Server zu verbinden
+on rightclick with {@switcher-item}:
+	set {_gui} to a chest inventory with 3 rows named "{@switcher-name}"
+	loop 27 times:
+		set slot loop-number - 1 of {_gui} to {@filler}
+	
+	set slot 1 of {_gui} to {@arena-item}
+	set slot 7 of {_gui} to {@event-item}
+	set slot 9 of {_gui} to {@bedwars-item}
+	set slot 11 of {_gui} to {@zombie-item}
+	set slot 13 of {_gui} to {@roleplay-item}
+	set slot 15 of {_gui} to {@creative-item}
+	set slot 17 of {_gui} to {@modpack-item}
+	set slot 19 of {_gui} to {@knockit-item}
+	set slot 25 of {_gui} to {@smp-item}
+
+	open {_gui} for player
+	play sound "block.amethyst_block.resonate" to player
+
+
+#Server wechseln bei Klick auf ein Item
+on inventory click:
+	event-inventory's name is "{@switcher-name}":
+		cancel event
+		
+		if event-slot is 1:
+			serverInDevelopment(player)
+		if event-slot is 7:
+			serverInDevelopment(player) 
+		if event-slot is 9:
+			serverInDevelopment(player)
+		if event-slot is 11:
+			serverInDevelopment(player)
+		if event-slot is 13:
+			sendToServer(player, "roleplay")
+		if event-slot is 15:
+			serverInDevelopment(player)
+		if event-slot is 17:
+			serverInDevelopment(player)
+		if event-slot is 19:
+			serverInDevelopment(player)
+		if event-slot is 25:
+			serverInDevelopment(player)
+
+function serverInDevelopment(p: player):
+	close {_p}'s inventory
+	send "%{ava::prefix::navigator}% Dieser Server ist noch in Entwicklung!" to {_p}
+	play sound "block.beacon.deactivate" to {_p}
+
+function sendToServer(p: player, s: string):
+	close {_p}'s inventory
+	play sound "block.beacon.activate" to {_p}
+	wait 40 tick
+	connect {_p} to server {_s}
+
+on load:
+	loadModule("Lobby: Navigator")

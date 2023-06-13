@@ -1,0 +1,12 @@
+on chat:
+	set {_world} to placeholder "%%multiverse_world_alias%%"
+	set chat format to "§7[%{_world}%§7] §d%player's displayname% §7» §f%message%"
+
+on join:
+	set join message to "§aJoin §7> §d%player's displayname%"
+
+on leave:
+	set leave message to "§cLeave §7> §d%player's displayname%"
+
+on load:
+	loadModule("System: Chat")

@@ -1,0 +1,14 @@
+command /sc:
+	trigger:
+		set title of player's scoreboard to "§6§lAva§5§lRPG"
+		toggle scoreboard of player on
+		set line 15 of player's scoreboard to ""
+		set line 14 of player's scoreboard to "§6§lGeldbörse:"
+		set line 13 of player's scoreboard to "§e%player's money%"
+		set line 12 of player's scoreboard to ""
+		set line 11 of player's scoreboard to "§6§lSpielzeit:"
+		set line 10 of player's scoreboard to "§e%{pt::%player%::f}%"
+		set line 9 of player's scoreboard to ""
+		set line 8 of player's scoreboard to "§6§lSpieler:"
+		set line 7 of player's scoreboard to "§e%size of all players%§7/§6%max player count%"
+		set line 1 of player's scoreboard to ""

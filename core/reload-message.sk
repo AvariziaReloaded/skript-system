@@ -1,0 +1,3 @@
+on load:
+    broadcast ""
+    broadcast "%{ava::prefix}% Der %{ava::c2}%Systemkern %{ava::c1}%wurde erfolgreich geladen. %{ava::rc}%✔"

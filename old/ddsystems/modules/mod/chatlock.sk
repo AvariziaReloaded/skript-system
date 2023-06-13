@@ -1,0 +1,20 @@
+command /chatlock:
+	permission: dd.chatlock
+	permission message: %{dd::f::permerror}%
+	trigger:
+		if {dd::chatlock::locked} is set:
+			clear {dd::chatlock::locked}
+			send "%{dd::f::prefix}% Der Chat wurde durch %{dd::f::pc}%%player% %{dd::f::c1}%entsperrt." to all players
+		else:
+			set {dd::chatlock::locked} to true
+			send "%{dd::f::prefix}% Der Chat wurde durch %{dd::f::pc}%%player% %{dd::f::c1}%gesperrt." to all players
+			
+on chat:
+	{dd::chatlock::locked} is set
+	player does not have permission "dd.chatlock"
+	cancel event
+	send "%{dd::f::errorprefix}% Der Chat ist momentan gesperrt." to player
+	send "%{dd::f::errorprefix}% Deine Nachricht wurde nicht gesendet." to player
+	
+on load:
+	loadModule("Mod: Chatlock")

@@ -1,0 +1,51 @@
+command /gamemode [<string>] [<offlineplayer>]:
+	aliases: /gm
+	permission: dd.gamemode
+	permission message: %{dd::f::permerror}%
+	executable by: console and player
+	trigger:
+		if arg-1 is not set:
+			send "%{dd::f::prefix}% %{dd::f::c2}%/gamemode <0-3> [<Spieler>]"
+		else:
+			if arg-2 is not set:
+				if arg-1 is "0" or "survival":
+					set player's gamemode to survival
+					set {_mode} to "Survival"
+				else if arg-1 is "1" or "creative":
+					set player's gamemode to Creative
+					set {_mode} to "Creative"
+				else if arg-1 is "2" or "adventure":
+					set player's gamemode to Adventure
+					set {_mode} to "Adventure"
+				else if arg-1 is "3" or "spectator":
+					set player's gamemode to spectator
+					set {_mode} to "Spectator"
+				else:
+					errorSubCmd("/gamemode", player)
+					stop
+					
+				send "%{dd::f::prefix}% Du hast deinen Spielmodus zu %{dd::f::c2}%%{_mode}% %{dd::f::c1}%geändert." to player
+			else if arg-2 is online:
+				if arg-1 is "0" or "survival":
+					set arg-2's gamemode to survival
+					set {_mode} to "Survival"
+				else if arg-1 is "1" or "creative":
+					set arg-2's gamemode to Creative
+					set {_mode} to "Creative"
+				else if arg-1 is "2" or "adventure":
+					set arg-2's gamemode to Adventure
+					set {_mode} to "Adventure"
+				else if arg-1 is "3" or "spectator":
+					set arg-2's gamemode to spectator
+					set {_mode} to "Spectator"
+				else:
+					errorSubCmd("/gamemode", player)
+					stop
+				
+				send "%{dd::f::prefix}% Du hast den Spielmodus von %{dd::f::pc}%%arg-2% %{dd::f::c1}%zu %{dd::f::c2}%%{_mode}% %{dd::f::c1}%geändert." to player
+				send "%{dd::f::prefix}% Dein Spiemodus wurde von %{dd::f::pc}%%player% %{dd::f::c1}%zu %{dd::f::c2}%%{_mode}% %{dd::f::c1}%geändert." to arg-2
+			else:
+				send "%{dd::f::errorprefix}% Der Spieler %{dd::f::c2}%%arg-2% %{dd::f::c1}%ist nicht online!" to player
+				
+on load:
+	loadModule("Team: Gamemode")

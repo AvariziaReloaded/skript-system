@@ -1,0 +1,8 @@
+on death:
+	entity is not a player or wither or enderdragon
+	set {_i} to "%victim% spawn egg" parsed as an item type
+	chance of 0.1%:
+		drop {_i}
+		
+on load:
+	loadModule("Utilities: Mob-Egg-Drop")

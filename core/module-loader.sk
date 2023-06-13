@@ -1,0 +1,2 @@
+function loadModule(m: string):
+    broadcast "%{ava::prefix::module}% Modul %{ava::c2}%%{_m}% %{ava::rc}%✔"

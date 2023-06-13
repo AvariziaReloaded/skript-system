@@ -1,0 +1,9 @@
+#Begrüßung beim Betreten des Servers
+
+on join:
+	wait 1 tick #Warten, bis der Chat von chat-clear.sk geleert wurde
+	send title "§6§lAvarizia §5§lNetworks" with subtitle "§eWillkommen, §d%player%"
+	play sound "music.credits" from records category at volume 0.1 and pitch 1 to player
+
+on load:
+	loadModule("Lobby/Messages: Willkommen")

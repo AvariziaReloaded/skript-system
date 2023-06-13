@@ -1,0 +1,7 @@
+command /ddsystemsreload:
+	permission: dd.reload
+	permission message: %{dd::f::permerror}%
+	trigger:
+		make console execute "/skript reload /ddsystems/core/"
+		wait 5 ticks
+		make console execute "/skript reload /ddsystems/modules/"

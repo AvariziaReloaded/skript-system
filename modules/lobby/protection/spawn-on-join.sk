@@ -1,0 +1,6 @@
+on join:
+    wait 1 tick
+    teleport player to {ava::lobby::spawn}
+
+on load:
+    loadModule("Lobby/Protection: Spawn on Join")

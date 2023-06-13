@@ -1,0 +1,120 @@
+options:
+	shop-name: §5§lSpezial-Shop
+
+	#item names
+	pickaxe-name: §c§k||| §4§lSpawner Miner §c§k|||
+	potion-name: §7§lTraum des Bergmanns
+	torch-name: §a§lWurffackel
+	light-name: §f§lLicht
+
+	#cost config
+	pickaxe-cost: 125000
+	potion-cost: 15000
+	torch-cost: 500
+	light-cost: 2500
+
+	#slot config
+	pickaxe-slot: 1
+	potion-slot: 3
+	torch-slot: 5
+	light-slot: 7
+
+command /shop [<string>]:
+	trigger:
+		set {_g} to a chest inventory with 1 row named "{@shop-name}"
+		loop 9 times:
+			set slot loop-value - 1 of {_g} to gray stained glass pane named "§7"
+		set slot {@pickaxe-slot} of {_g} to a netherite pickaxe named "{@pickaxe-name}" with lore "%{dd::f::c1}%Baut genau einen Spawner ab." and "" and "%{dd::f::c1}%Kosten: %{dd::f::c2}%{@pickaxe-cost} Gulden" and "§7§oKaufen mit Rechtsklick."
+		set slot {@torch-slot} of {_g} to a torch named "{@torch-name}" with lore "%{dd::f::c1}%Platziere Fackeln auf Distanz." and "" and "%{dd::f::c1}%Kosten:  %{dd::f::c2}%{@torch-cost} Gulden §7(für 10 Stück)" and "§7§oKaufen mit Rechtsklick."
+		set slot {@potion-slot} of {_g} to a potion named "{@potion-name}" with lore "%{dd::f::c1}%Baue Blöcke im Handumdrehen ab." and "" and "%{dd::f::c1}%Kosten:  %{dd::f::c2}%{@potion-cost} Gulden" and "§7§oKaufen mit Rechtsklick."
+		set slot {@light-slot} of {_g} to light named "{@light-name}" with lore "%{dd::f::c1}%Ein unsichtbarer Licht Block." and "" and "%{dd::f::c1}%Kosten:  %{dd::f::c2}%{@light-cost} Gulden §7(für 5 Stück)" and "§7§oKaufen mit Rechtsklick."
+		play sound "block.chest.open" to player
+		open {_g} to player
+
+on inventory click:
+	name of player's inventory is "{@shop-name}"
+	cancel event
+	play sound "ui.button.click" to player
+	if clicked slot is {@pickaxe-slot}:
+		click type is right mouse button
+		close player's inventory
+		if player's money >= {@pickaxe-cost}:
+			remove {@pickaxe-cost} from player's money
+			give player a netherite pickaxe named "{@pickaxe-name}" with lore " %{dd::f::c1}%Baut genau einen Spawner ab."
+			play sound "entity.villager.celebrate" to player
+			send "%{dd::f::prefix}%Item erfolgreich erworben. §7(§c-{@pickaxe-cost} Gulden§7)"
+		else:
+			send "%{dd::f::errorprefix}%Du hast nicht genug Geld, um das zu kaufen."
+			play sound "entity.villager.no" to player
+			
+	if clicked slot is {@torch-slot}:
+		click type is right mouse button
+		close player's inventory
+		if player's money >= {@torch-cost}:
+			remove {@torch-cost} from player's money
+			give player 10 torch named "{@torch-name}" with lore " %{dd::f::c1}%Platziere Fackeln auf Distanz."
+			play sound "entity.villager.celebrate" to player
+			send "%{dd::f::prefix}%Item erfolgreich erworben. §7(§c-{@torch-cost} Gulden§7)"
+		else:
+			send "%{dd::f::errorprefix}%Du hast nicht genug Geld, um das zu kaufen."
+			play sound "entity.villager.no" to player
+	
+	if clicked slot is {@potion-slot}:
+		click type is right mouse button
+		close player's inventory
+		if player's money >= {@potion-cost}:
+			remove {@potion-cost} from player's money
+			give player a potion named "{@potion-name}" with lore " %{dd::f::c1}%Baue Blöcke im Handumdrehen ab."
+			play sound "entity.villager.celebrate" to player
+			send "%{dd::f::prefix}%Item erfolgreich erworben. §7(§c-{@potion-cost} Gulden§7)"
+		else:
+			send "%{dd::f::errorprefix}%Du hast nicht genug Geld, um das zu kaufen."
+			play sound "entity.villager.no" to player
+			
+	if clicked slot is {@light-slot}:
+		click type is right mouse button
+		close player's inventory
+		if player's money >= {@light-cost}:
+			remove {@light-cost} from player's money
+			give player 5 light named "{@light-name}" with lore "§6Platziere diesen Block, um sofort das maximale Light-Level zu bekommen."
+			play sound "entity.villager.celebrate" to player
+			send "%{dd::f::prefix}%Item erfolgreich erworben. §7(§c-{@light-cost} Gulden§7)"
+		else:
+			send "%{dd::f::errorprefix}%Du hast nicht genug Geld, um das zu kaufen."
+			play sound "entity.villager.no" to player
+			
+on drink of potion:
+	name of event-item is "§7§lTraum des Bergmanns"
+	cancel event
+	apply haste 30 to player for 300 seconds
+	play sound "entity.firework_rocket.twinkle" to player
+	remove event-item from player's inventory
+	
+#Spawner miner tool
+on break of spawner:
+	name of player's tool is "{@pickaxe-name}"
+	cancel event
+	set event-block to air
+	drop event-block
+	damage player's tool by 5000
+	
+#werfbare fackel
+on right click holding torch:
+	name of player's held item is "{@torch-name}"
+	cancel event
+	shoot snowball from player at speed 3
+	set {torch::%player%} to true
+
+#   
+on projectile hit:
+	event-projectile is a snowball
+	{torch::%shooter%} is true
+	set {torch::%shooter%} to false
+	block above event-block is air
+	event-block is solid
+	set block above event-block to a torch
+	remove 1 torch named "§a§lWurffackel" from shooter
+	
+	
+on load:
+	loadModule("Spieler: Shop")

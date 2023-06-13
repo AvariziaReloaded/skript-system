@@ -1,0 +1,33 @@
+options:
+    backpack-size: 2 #chest rows
+    backpack-name: "§6Rucksack §7• <##C05BD1>%player%"
+
+command /rucksack:
+    trigger:
+        open openBackpack(player) to player
+
+
+#Auslöser für das speichern des Inventars
+on inventory close:
+    if inventory name of event-inventory is {@backpack-name}:
+        generateBackpack(event-inventory)
+        send "%{ava::prefix::rucksack}%Dein Rucksack wurde gespeichert!" to player
+        stop
+
+
+# Speichert den Inhalt des Inventars in der Datenbank
+function generateBackpack(i: inventory):
+    set {_slot} to 0
+    loop all slots of {_i}:
+        set {ava::utilities::playerdata::%player%::backpack::%{_slot}%} to loop-value
+        add 1 to {_slot}
+    
+
+# Liest den Inhalt der Datenbank und fügt ihn in das Inventar ein
+fuction openBackpack(p: player) :: inventory:
+    set {_g} to a chest inventory with {@backpack-size} rows named {@backpack-name}
+    set {_slot} to 0
+    loop {ava::utilities::playerdata::%player%::backpack::*}:
+        set slot {_slot} of {_g} to loop-value
+        add 1 to {_slot}
+    return {_g}

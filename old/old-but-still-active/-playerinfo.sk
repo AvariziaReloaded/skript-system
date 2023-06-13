@@ -1,0 +1,27 @@
+options:
+	pe: §7[§4§lERROR§7] §8» §c
+	p: §7[§5Avarizia§7] §8» §6
+	pc: §d
+	c1: §6
+	c2: §e
+	
+command /playerinfo <offlineplayer>:
+	permission: avarizia.playerinfo
+	permission message: {@pe}Dieser Befehl ist unseren Supportern vorenthalten.
+	trigger:
+		send ""
+		send "{@c2}---- {@c1}Playerinfo: {@pc}%arg-1% {@c2}----"
+		send "{@c1}Position: {@c2}%arg-1's location%"
+		send "{@c1}Gamemode: {@c2}%arg-1's gamemode%"
+		send "{@c1}Geld: %arg-1's money%"
+		send "{@c1}Ping: %arg-1's ping%"
+		send "{@c2}---- {@c1}Playerinfo: {@pc}%arg-1% {@c2}----"
+		send ""
+
+
+on load:
+	wait 20 ticks
+	set {avarizia::modules::playerinfo} to true
+	
+on unload:
+	set {avarizia::modules::playerinfo} to false

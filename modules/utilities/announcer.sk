@@ -1,0 +1,17 @@
+command /announcer [<string>] [<string>]:
+    permission: avarizia.announcer
+    trigger:
+        if arg-1 is "addmessage"
+        else if arg-1 is "removemessage"
+        else if arg-1 is "listmessages"
+
+
+
+
+
+on load:
+    loadModule("Utilities: Announcer")
+
+
+on tab complete of "/announcer":
+    set tab completions for position 1 to "addmessage" "removemessage" "listmessages"

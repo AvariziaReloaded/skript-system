@@ -1,0 +1,37 @@
+command /rp [<string>]:
+	trigger:
+		if arg-1 is not set:
+			set {_t} to placeholder "%%townyadvanced_town%%"
+			set {_n} to placeholder "%%townyadvanced_nation%%"
+			
+			if {_n} is not set:
+				set {_n} to "§eKeine"
+			if {_t} is not set:
+				set {_t} to "§eKeine"
+
+			send "§6-------------------- §eRP-Menü §6--------------------"
+			send ""
+			send "§6Spieler: §e%player's displayname%"
+			send "§6Spielzeit: §e%{pt::%player%::f}%"
+			send ""
+			send "§6Geldbörse: §e%player's money%"
+			send "§6Adelstitel: §7§oComing Soon..."
+			send ""
+			send "§6Stadt: <command:/town>%{_t}%"
+			send "§6Nation: <command:/nation>%{_n}%"
+			send ""
+			send formatted "<command:/rp aktionen><ttp:§bLege dich auf den Boden, drehe dich im Kreis...>§7[§bAktionen§7] <command:/backpack><ttp:§6Öffne deinen Rucksack, den du auf dem Rücken trägst.>§7[§6Rucksack§7] <command:/sharecords><ttp:§dTeile deine Postion mit allen Spieler auf dem Server. (Mit einem einzigen Klick)>§7[§dPosition teilen§7]<reset> <command:/schnellreise><ttp:§2Reise auf magische Art und Weise zu den wichtigsten Orten Avarizias.>§7[§2Schnellreise§7]"
+			send "§6-------------------- §eRP-Menü §6--------------------"
+			
+		else if arg-1 is "aktionen":
+			send ""
+			send "<command:/spin>§7[§aDrehen§7]"
+			send "<command:/sit>§7[§bHinsetzen§7]"
+			send "<command:/crawl>§7[§dKrabbeln§7]"
+			send "<command:/lay>§7[§3Auf den Rücken legen§7]"
+			send "<command:/bellyflop>§7[§2Auf den Bauch legen§7]"
+			send ""
+
+		
+on load:
+	loadModule("Spieler: RP")

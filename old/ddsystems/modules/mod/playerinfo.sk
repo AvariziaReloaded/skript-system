@@ -1,0 +1,18 @@
+command /playerinfo <offlineplayer>:
+	permission: dd.playerinfo
+	permission message: %{dd::f::permerror}%
+	trigger:
+		send ""
+		send "%{dd::f::c2}%---- %{dd::f::c1}%Playerinfo: %{dd::f::pc}%%arg-1% %{dd::f::c2}%----"
+		send "%{dd::f::c1}%Position: %{dd::f::c2}%%arg-1's location%"
+		send "%{dd::f::c1}%Gamemode: %{dd::f::c2}%%arg-1's gamemode%"
+		send "%{dd::f::c1}%Geld: %{dd::f::c2}%%arg-1's money%"
+		send "%{dd::f::c1}%Ping: %{dd::f::c2}%%arg-1's ping%"
+		send "%{dd::f::c1}%Bank/Geld: %{dd::f::c2}%%{bank::konto::geld::%arg-1%}%"
+		send "%{dd::f::c1}%Bank/XP: %{dd::f::c2}%%{bank::konto::xp::%player%}%"
+		send "%{dd::f::c2}%---- %{dd::f::c1}%Playerinfo: %{dd::f::pc}%%arg-1% %{dd::f::c2}%----"
+		send ""
+
+
+on load:
+	loadModule("Mod: Playerinfo")

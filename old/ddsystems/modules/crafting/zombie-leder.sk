@@ -1,0 +1,5 @@
+on skript load:
+    register new furnace recipe for leather using rotten flesh with id "zombie_leather" and with cook time 30 seconds
+
+#on load:
+#	loadModule("Crafting: Zombie-Leder")

@@ -1,0 +1,23 @@
+on join:
+    wait 5 ticks
+    player's ip address is "2a02:c207:3009:7053:0:0:0:1"
+    {ava::lobby::playerdata::%player%::disable-proxyinfo} is not set
+    send formatted "<cmd:/proxyinfo>%{ava::prefix::network}% Du bist über unseren Proxy verbunden. §7[%{ava::c2}%Weitere Infos§7]"
+
+command /proxyinfo [<string>]:
+    trigger:
+        if arg-1 is "disable":
+            send "%{ava::prefix::network}% Der Proxy-Hinweis wird beim joinen nun nicht mehr angezeigt."
+            set {ava::lobby::playerdata::%player%::disable-proxyinfo} to true
+        else if arg-1 is "enable":
+            clear {ava::lobby::playerdata::%player%::disable-proxyinfo}
+        else:
+            send "%{ava::prefix::network}% Deine Verbindung über den Proxy ist sehr stabil, aber leider auch etwas langsam."
+            send "%{ava::prefix::network}% Sollte dein Computer/Netzwerk %{ava::c2}%IPv6 %{ava::c1}%unterstützen, kannst du dich auch %{ava::c2}%direkt %{ava::c1}%mit unserem Netzwerk verbinden."
+            send "%{ava::prefix::network}% Probier dazu einfach mal die Adresse %{ava::c2}%'fast.avarizia.eu' %{ava::c1}%aus."
+            send "%{ava::prefix::network}% Wenn du keine Verbindung bekommst, unterstützt dein Computer/Netzwerk leider kein IPv6."
+            send ""
+            send formatted "<cmd:/proxyinfo disable>%{ava::prefix::network}% Du kannst den Hinweis beim Joinen §7[%{ava::c2}%Hier§7] %{ava::c1}%für immer ausblenden lassen."
+
+on load:
+    loadModule("Lobby/Messages: IPv6 Proxy Info")

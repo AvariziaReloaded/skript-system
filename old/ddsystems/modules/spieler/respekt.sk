@@ -1,0 +1,16 @@
+command /respekt <offlineplayer>:
+	usage: %{dd::f::prefix}%Zeige anderen Spielern deinen Respekt: §a/respekt §e<Spieler>
+	trigger:
+		if arg-1 is online:
+			broadcast "%{dd::f::prefix}% %{dd::f::pc}%%player% %{dd::f::c1}%schenkt %{dd::f::pc}%%arg-1% %{dd::f::c1}%eine Runde Respekt."
+			broadcast ""
+			broadcast "§d§l███"
+			broadcast "§d§l█"
+			broadcast "§d§l██"
+			broadcast "§d§l█"
+			broadcast "§d§l█"
+		else:
+			send "%{dd::f::errorprefix}% Dieser Spieler ist nicht online!"
+			
+on load:
+	loadModule("Spieler: Respekt")

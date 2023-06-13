@@ -1,0 +1,2 @@
+on tab complete of "/bal" or "/balance":
+	clear tab completions

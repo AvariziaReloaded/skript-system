@@ -1,0 +1,53 @@
+on command:
+	loop all players:
+		loop-player has permission "dd.cspy"
+		{dd.cspy::%loop-player%::enabled} is true
+		
+		if {dd.cspy::%loop-player%::passive} is true:
+			send "§8[§7CSPY§8] §8(§7%player%§8) §8» §7%full command%" to loop-player
+		
+		else:
+			send "§7[§9DD §8| §bCSPY§7] §7(§d%player%§7) §8» §e%full command%" to loop-player
+
+
+			
+command /cspy [<string>]:
+	permission: dd.cspy
+	permission message: %{dd::f::permerror}%
+	usage: §a/cspy
+	trigger:
+		if arg-1 is not set:
+			send ""
+			send "§a/cspy §e<Argument>"
+			send ""
+			send "§b➥ §etoggle §9- §3Schaltet CSPY An bzw. Aus"
+			send "§b➥ §emode §9- §3Schaltet ziwschen dem besser sichtbarem aktiven und dem weniger sichbarem passiven Modus um"
+			send ""
+		
+		else if arg-1 is "toggle":
+			if {dd.cspy::%player%::enabled} is true:
+				clear {dd.cspy::%player%::enabled}
+				send "%{dd::f::prefix}%CommandSpy wurde ausgeschaltet."
+				exit
+			
+			if {dd.cspy::%player%::enabled} is not set:
+				set {dd.cspy::%player%::enabled} to true
+				send "%{dd::f::prefix}%CommandSpy wurde eingeschaltet."
+				exit
+		
+		else if arg-1 is "mode":
+			if {dd.cspy::%player%::passive} is true:
+				clear {dd.cspy::%player%::passive}
+				send "%{dd::f::prefix}%Passiver Modus wurde ausgeschaltet."
+				exit
+			
+			if {dd.cspy::%player%::passive} is not set:
+				set {dd.cspy::%player%::passive} to true
+				send "%{dd::f::prefix}%Passiver Modus wurde eingeschaltet."
+				exit
+		
+		else:
+			errorSubCmd("/cspy", player)
+			
+on load:
+	loadModule("Mod: CommandSpy")

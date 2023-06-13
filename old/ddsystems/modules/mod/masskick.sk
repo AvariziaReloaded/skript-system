@@ -1,0 +1,13 @@
+command /masskick [<string>]:
+	permission: dd.masskick
+	permission message: %{dd::f::errorprefix}%
+	trigger:
+		if arg-1 is not set:
+			send "§a/masskick §7<§eGrund §9| §cconfirm§7>"
+		else if arg-1 is "confirm":
+			kick all players due to "§4§l✖✖✖ §6Avarizia §7| §d§lMasskick §4§l✖✖✖ %newline% %newline% §6Alle Spieler wurden vom Server geworfen. %newline%Ein Grund wurde nicht angegeben.%newline%%newline%§cAusführendes Teammitglied: §e%player%%newline%%newline%§4§l✖✖✖ §6Avarizia §7| §d§lMasskick §4§l✖✖✖"
+		else:
+			kick all players due to "§4§l✖✖✖ §6Avarizia §7| §d§lMasskick §4§l✖✖✖ %newline% %newline% §6Alle Spieler wurden vom Server geworfen. %newline%Der Grund dafür ist: §e%arg-1%.%newline%%newline%§cAusführendes Teammitglied: §e%player%%newline%%newline%§4§l✖✖✖ §6Avarizia §7| §d§lMasskick §4§l✖✖✖"
+			
+on load:
+	loadModule("Mod: Masskick")

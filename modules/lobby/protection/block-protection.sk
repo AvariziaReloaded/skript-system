@@ -1,0 +1,18 @@
+on break:
+    {ava::lobby::active} is set
+    cancel event
+
+on damage:
+    {ava::lobby::active} is set
+    cancel event
+
+on drop:
+    {ava::lobby::active} is set
+    cancel event
+
+on place:
+    {ava::lobby::active} is set
+    cancel event
+    
+on load:
+    loadModule("Lobby/Protection: BlockProtection")

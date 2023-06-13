@@ -1,0 +1,24 @@
+command /customenchant <offlineplayer> <enchantment type> :
+	permission: dd.customenchant
+	permission message: %{dd::f::permerror}%
+	executable by: player
+	usage: §a/customenchant §e<Spieler> <Enchantment>
+	trigger:
+		if arg-1 is online:
+			enchant arg-1's held item with arg-2
+			send "%{dd::f::prefix}%Dein Item wurde mit %{dd::f::c2}%%arg-2% %{dd::f::c1}%verzaubert." to arg-1
+			send "%{dd::f::prefix}%Du hast das Item von %{dd::f::pc}%%arg-1% %{dd::f::c1}%mit %{dd::f::c2}%%arg-2% %{dd::f::c1}%verzaubert."
+		else:
+			send "§cDieser Spieler ist nicht online!"
+			send "§a/customenchant §c%arg-1%"
+		
+on load:
+	loadModule("Utilities: Custom-Level-Enchantments")
+	
+on load:
+	set {dd.customenchant::enchantments::*} to all enchantments
+	broadcast "%{dd.customenchant::enchantments::*}%"
+	
+on tab complete of "/customenchant":
+	loop all enchantment type:
+		add loop-value to tab completions for position 2

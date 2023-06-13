@@ -1,0 +1,24 @@
+on click:
+	loop all players:
+		loop-player has permission "dd.cspy"
+		add 1 to {dd.ac::clickcounter::%player%}
+		
+every 10 seconds:
+	loop all players:
+		loop-player has permission "dd.cspy"
+		{dd.ac::listen::%loop-player%} is true
+		loop {dd.ac::clickcounter::*}:
+			set {_cps} to {dd.ac::clickcounter::%loop-index%} / 10
+			send "%loop-index parsed as a player% > %loop-value-2% > %{_cps}%" to loop-player
+			clear {dd.ac::clickcounter::%loop-index%}
+			
+command /anticheat [<string>]:
+	permission: dd.anticheat
+	trigger:
+		if arg-1 is "listen":
+			set {dd.ac::listen::%player%} to true
+		if arg-1 is "unlisten":
+			set {dd.ac::listen::%player%} to false
+			
+on tab complete of "/anticheat":
+	set tab completions for position 1 to "listen" and "unlisten"

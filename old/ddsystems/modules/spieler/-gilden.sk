@@ -1,0 +1,50 @@
+command /gilde [<string>] [<string>]:
+	trigger:
+		if arg-1 is not set:
+			open gildenMainGui() to player
+		else if arg-1 is "erstellen":
+		else if arg-1 is "löschen":
+		else if arg-1 is "hilfe":
+		else if arg-1 is "einstellungen":
+		else:
+			send "§cDiesen Unterbefehl gibt es nicht."
+			send "§a/gilde §c%arg-1%"
+
+function gildenMainGui() :: inventory:
+	set {_g} to a chest inventory with 1 row named "Gilden"
+	set slot 1 of {_g} to a netherite sword named "Gilden ansehen" with lore "Listet alle bestehenden Gilden auf."
+	set slot 2 of {_g} to a emerald named "Gilde gründen" with lore "Gründe eine neue Gilde"
+	return {_g}
+
+
+on chat:
+	if {dd.gilde::isNaming::%player%} is true:
+		cancel event
+		set {_name} to chat message
+		if {dd.gilde::gilden::%{_name}%} is not set:
+			set {dd.gilde::gilden::%{_name}%} to true
+			set {dd.gilde::gilden::%{_name}%::owner} to player
+			set {dd.gilde::gilden::%{_name}%::creator} to player
+			set {dd.gilde::gilden::%{_name}%::createdon} to date
+			send "Die Gilde mit dem Namen %{_name}% wurde erfolgreich erstellt."
+
+		else:
+			send "Eine Gilde mit diesem Namen gibt es bereits!"
+	
+	clear {dd.gilde::isNaming::%player%}
+
+command /listgilden:
+	trigger:
+		loop {dd.gilde::gilden::*}:
+			send "%loop-index% - %loop-value%"
+
+command /newgilde:
+	trigger:
+		set {dd.gilde::isNaming::%player%} to true
+
+on inventory click:
+	name of player's inventory is "Gilden"
+	cancel event
+
+#on load:
+	#loadModule("Spieler: Gilden")

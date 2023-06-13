@@ -1,0 +1,5 @@
+on chat:
+    set chat format to "%{ava::rp::playerdata::%player%::titel}% §7• <##C05BD1>%player% §8» §f%message%"
+
+on load:
+    loadModule("Roleplay: Chat")

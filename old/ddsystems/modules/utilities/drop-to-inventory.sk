@@ -1,0 +1,22 @@
+on mine:
+	if {dd.d2i::%player%} is true:
+		{dd.hammer::%player%} is not set
+		event-block is not a shulker box or ender chest
+		if player has enough space for drops of block using player's tool:
+			cancel item drops
+			give player drops of block using player's tool
+			loop inventory of event-block:
+				drop loop-value
+			
+		
+command /drop2inv [<string>]:
+	trigger:
+		if {dd.d2i::%player%} is true:
+			clear {dd.d2i::%player%}
+			send "%{dd::f::prefix}% Der %{dd::f::c2}%Drop-2-Inventory-Modus %{dd::f::c1}%wurde ausgeschaltet."
+		else:
+			set {dd.d2i::%player%} to true
+			send "%{dd::f::prefix}% Der %{dd::f::c2}%Drop-2-Inventory-Modus %{dd::f::c1}%wurde eingeschaltet."
+			
+on load:
+	loadModule("Utilities: Drop-to-Inventory")

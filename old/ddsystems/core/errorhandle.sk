@@ -1,0 +1,3 @@
+function errorSubCmd(try:string, p:player):
+	send "%{dd::f::errorprefix}% Diesen Sub-Command gibt es nicht!" to {_p}
+	send "%{dd::f::errorprefix}% Alle Sub-Commands findest du unter: %{dd::f::c2}%%{_try}%" to {_p}

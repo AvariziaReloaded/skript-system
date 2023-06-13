@@ -1,0 +1,32 @@
+options:
+	backpack: §d§lRucksack von
+
+command /backpack [<string>]:
+	aliases: /rucksack, /rs, /bp
+	trigger:
+		set {dd.rucksack::%player%} to a chest inventory with 6 rows named "{@backpack} %player%"
+		set {_s} to 0
+		loop 54 times:
+			set slot {_s} of {dd.rucksack::%player%} to {dd.rucksack::%player%::slot::%{_s}%}
+			add 1 to {_s}
+		open {dd.rucksack::%player%} to player
+		play sound "block.chest.open" to player		
+			
+on inventory close:
+	name of player's inventory is "{@backpack} %player%"
+	play sound "block.chest.close" to player
+	set {_s} to 0
+	loop 54 times:
+		set {dd.rucksack::%player%::slot::%{_s}%} to slot {_s} of {dd.rucksack::%player%}
+		add 1 to {_s}
+	send "%{dd::f::prefix}% Dein Rucksack wurde gespeichert." to player		
+
+on inventory click:
+	name of player's inventory is "{@backpack} %player%"
+	clicked slot is set
+	clicked slot is not empty
+	play sound "item.armor.equip_leather" to player
+	
+	
+on load:
+	loadModule("Spieler: Rucksack")

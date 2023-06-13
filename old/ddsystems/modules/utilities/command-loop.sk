@@ -1,0 +1,11 @@
+command /loop <int> <int> <string>:
+	permission: dd.loop
+	usage: §a/loop §e<Anzahl> <Delay> <Command> §cVorsicht bei 0 Delay und hohen Anzahlen: Server-Crash möglich!
+	trigger:
+		set {_t} to arg-2
+		loop arg-1 times:
+			wait "%{_t}% ticks" parsed as a timespan
+			make player execute arg-3
+			
+on load:
+	loadModule("Utilities: Command-Loop")

@@ -1,0 +1,56 @@
+options:
+	pe: §7[§4§lERROR§7] §8» §c
+	p: §7[§5Avarizia §8| §dSchnellreise§7] §8» §6
+	pc: §d
+	c1: §6
+	c2: §e
+
+command /schnellreise [<string>]:
+	usage: {@c1}/schnellreise §7<{@c2}Ort§7>
+	cooldown: 300 seconds
+	cooldown message: {@p}Du musst noch {@c2}%remaining time% {@c1}warten, bevor du erneut die Schnellreise benutzen kannst!
+	cooldown storage: {schnellreise::cooldown::%player%}
+	trigger:
+		if arg-1 is not set:
+			send ""
+			send "§6Hier findest du unsere Schnellreise-Punkte:"
+			loop {schnellreise::punkte::*}:
+				send formatted "{@p}%loop-index% §7[<command:/schnellreise %loop-index%>{@c2}TP§7]"
+			wait 1 tick
+			clear {schnellreise::cooldown::%player%}
+		else:
+			if {schnellreise::punkte::%arg-1%} is set:
+				teleport player to {schnellreise::punkte::%arg-1%}
+			else:
+				send "{@pe}Diesen Ort gibt es nicht!"
+				
+command /setupschnellreise <string> <string>:
+	usage: /setupschnellreise <add | del> <Ort>
+	permission: avarizia.setupschnellreise
+	permission message: {@pe}Dieser Befehl ist unseren Administratoren vorbehalten.
+	trigger:
+		if arg-1 is "add":
+			if {schnellreise::punkte::%arg-2%} is not set:
+				set {schnellreise::punkte::%arg-2%} to player's position
+				send "{@p}Punkt {@c2}%arg-2% {@c1}erfolgreich gesetzt."
+			else:
+				send "{@pe}Der Punkt %arg-2% existiert schon! Du musst ihr zuerst löschen oder einen anderen Namen wählen."
+		
+		else if arg-1 is "del":
+			if {schnellreise::punkte::*} is set:
+				send "{@p}Punkt {@c2}%arg-2% {@c1}erfolgreich gelöscht."
+				send "{@p}Vorherige Position: %{schnellreise::punkte::%arg-2%}%"
+				clear {schnellreise::punkte::%arg-2%}
+			else:
+				send "{@pe}Der Punkt %arg-2% existiert nicht und kann daher nicht gelöscht werden!"
+		
+		else:
+			send "{@pe}Diesen Sub-Befehl gibt es nicht."
+			
+
+on load:
+	wait 20 ticks
+	set {avarizia::modules::schnellreise} to true
+	
+on unload:
+	set {avarizia::modules::schnellreise} to false

@@ -1,0 +1,15 @@
+command /lobbysettings <string>:
+    permission: ava.lobbysettings
+    trigger:
+        if arg-1 is "umbau":
+            clear {ava::lobby::active}
+        else if arg-1 is "aktiv":
+            set {ava::lobby::active} to true
+        else if arg-1 is "spawn":
+            set {ava::lobby::spawn} to player's location
+
+on tab complete of "/lobbysettings":
+    set tab completions to "umbau" and "aktiv"
+
+on load:
+    loadModule("Lobby/Protection: Settings")
